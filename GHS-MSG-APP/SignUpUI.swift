@@ -5,14 +5,25 @@
 //  Created by Everett Hurder on 6/1/26.
 //
 
-// TODO: add the backend
-
 import SwiftUI
 
 struct SignUpUI: View {
     private enum AuthMode: String, CaseIterable {
         case signIn = "Log In"
         case signUp = "Sign Up"
+    }
+
+    private struct StudentRecord: Decodable {
+        let studentName: String
+        let studentEmail: String
+        let studentPhone: String
+        let emergencyContacts: [EmergencyContact]
+    }
+
+    private struct EmergencyContact: Decodable {
+        let name: String
+        let phone: String
+        let email: String
     }
 
     @State private var authMode: AuthMode = .signIn
@@ -277,8 +288,49 @@ struct SignUpUI: View {
             errorMessage = "Passwords do not match."
             return
         }
+        print("Checking here")
 
+        Task {
+            do {
+                print("Checking signup")
+                if (isSignUp) {
+                    print("Checking existing email")
+                    if (try await emailExists(email: trimmedEmail)) {
+                        errorMessage = "Email already exists... sign in?"
+                        return
+                    }
+                }
+            } catch {
+                errorMessage = "Unable to check email. Please try again."
+            }
+        }
         errorMessage = nil
+    }
+    
+    private func checkEmail(email: String) async throws -> StudentRecord {
+        var components = URLComponents(string: "https://script.google.com/macros/s/AKfycbypoNam4cCFcpABk7mLWrKMQs1oBdzSTrp7ZD-ttYrnWMdK2iQP8ynCVAQebtYPwNxO/exec")
+        components?.queryItems = [
+            URLQueryItem(name: "type", value: "email"),
+            URLQueryItem(name: "value", value: email)
+        ]
+
+        guard let url = components?.url else {
+            throw URLError(.badURL)
+        }
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+
+        return try decoder.decode(StudentRecord.self, from: data)
+    }
+
+    private func emailExists(email: String) async throws -> Bool {
+        let record = try await checkEmail(email: email)
+        print("Checking email")
+        print("Email: \(record.studentEmail)")
+        return record.studentEmail != ""
+        
     }
 }
 
