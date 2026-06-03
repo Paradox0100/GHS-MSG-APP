@@ -11,36 +11,37 @@ struct PreviewView: View {
         NavigationStack{
             VStack {
                 Text("Ram Chat")
-                    .font(.system(size : 50, weight: .bold, design: .default)).italic()
+                    .font(.system(size : 100, weight: .bold, design: .default)).italic()
                     .foregroundStyle(.white)
                 Image("Rams Logo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width : 200, height: 200)
+                    .frame(width : 400, height: 400)
                     .clipShape(Circle())
-                Spacer()
+                //Spacer()
+                    .padding(50)
                 NavigationLink(destination: SignInScreen()){
                     Text("Sign Up")
                         .foregroundStyle(Color.white)
-                        .font(.system(size: 40, weight: .bold, design: .serif))
+                        .font(.system(size: 70, weight: .bold, design: .serif))
                         .buttonStyle(.borderedProminent)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.white, lineWidth: 2)
-                                .frame(width:200, height:60)
+                                .frame(width:300, height:120)
                         )
                     
                 }
-                .padding(60)
+                .padding(90)
                 NavigationLink(destination: LoginScreen()) {
                     Text("Login")
                         .foregroundStyle(Color.white)
-                        .font(.system(size: 40, weight: .bold, design: .serif))
+                        .font(.system(size: 70, weight: .bold, design: .serif))
                         .buttonStyle(.borderedProminent)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.white, lineWidth: 2)
-                                .frame(width:200, height:60)
+                                .frame(width:300, height:120)
                         )
                     
                 }
