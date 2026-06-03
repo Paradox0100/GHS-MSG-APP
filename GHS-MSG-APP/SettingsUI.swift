@@ -21,85 +21,103 @@ struct SettingsUI: View {
     
     //Slider Variables
     
-    @State private var fontSize: Double = 32.5 //variable for font size slider
-    @State private var scalingFactor: Double = 32.5 //variable for scaling slider
+    @State private var fontSize: Double = 20.0 //variable for font size slider
+    
+    //Background Variables
+    private var backgroundGradient: some View {
+        LinearGradient(
+            colors: [
+                Color(red: 0.27, green: 0.02, blue: 0.08),
+                Color(red: 0.48, green: 0.05, blue: 0.14),
+                Color(red: 0.70, green: 0.12, blue: 0.22)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
 
     
     var body: some View {
-        
-        NavigationStack {
-            
-            Form {
+                    
+            NavigationStack {
                 
-                //invisible section to create more space between title and body
-                
-                Section {
-                    Spacer()
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
-                }
+                Form {
+                    
+                    Section {
+                        HStack {
+                            Toggle("Enable Notifications", isOn: $notificationsEnabled)
+                                .font(.title)
+                                .padding()
+                        }
+                    }
+                    
+                    Section {
+                        HStack {
+                            Toggle("Enable Dark Mode", isOn: $darkModeEnabled)
+                                .font(.title)
+                                .padding()
+                        }
+                    }
+                    
+                    Section {
+                        HStack {
+                            Toggle("Enable Remember Me", isOn: $rememberMeEnabled)
+                                .font(.title)
+                                .padding()
+                        }
+                    }
+                    
+                    Section {
+                        DisclosureGroup("Accessibility", isExpanded: $isExpanded) {
+                            
+                            VStack {
                                 
-                Section {
-                    HStack {
-                        Toggle("Enable Notifications", isOn: $notificationsEnabled)
-                            .font(.title)
-                            .padding()
-                    }
-                }
-                
-                Section {
-                    HStack {
-                        Toggle("Enable Dark Mode", isOn: $darkModeEnabled)
-                            .font(.title)
-                            .padding()
-                    }
-                }
-                
-                Section {
-                    HStack {
-                        Toggle("Enable Remember Me", isOn: $rememberMeEnabled)
-                            .font(.title)
-                            .padding()
-                    }
-                }
-                
-                Section {
-                    DisclosureGroup("Accessibility", isExpanded: $isExpanded) {
-                        
-                        VStack {
-                            
-                            HStack(spacing: 15){
-                                Text("Font Size")
-                                    .font(.title2)
-                                Spacer()
-                            }
-                            .padding()
-                            
-                            HStack(spacing: 15) {
-                                Slider(value: $fontSize, in: 15...50) {
-                                    Text("Font Size Slider")
-                                } minimumValueLabel: {
-                                    Text("15pt")
+                                HStack(spacing: 15){
+                                    Text("Font Size")
                                         .font(.title2)
-                                } maximumValueLabel: {
-                                    Text("50pt")
-                                        .font(.title2)
+                                    Spacer()
                                 }
+                                .padding()
+                                
+                                HStack(spacing: 15) {
+                                    Slider(value: $fontSize, in: 10...30) {
+                                        Text("Font Size Slider")
+                                    } minimumValueLabel: {
+                                        Text("10pt")
+                                            .font(.title2)
+                                    } maximumValueLabel: {
+                                        Text("30pt")
+                                            .font(.title2)
+                                    }
+                                }
+                                .padding()
+                                
                             }
-                            .padding()
                             
                         }
-                        
+                    }
+                    
+                    .font(.title)
+                    .padding()
+                    
+                }
+                
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Settings")
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundColor(.white)
                     }
                 }
                 
-                .font(.title)
-                .padding()
+                .scrollContentBackground(.hidden)
+                .background(backgroundGradient.ignoresSafeArea())
                 
+
             }
-            
-            .navigationTitle("Settings")
-        }
     }
 }
 
