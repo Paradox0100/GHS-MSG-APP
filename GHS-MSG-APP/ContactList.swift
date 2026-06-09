@@ -7,51 +7,85 @@ struct Contact: Identifiable {
     var sent: Bool
     var seen: Bool
     var unread: Bool
+    var time: Date
 }
 
 struct ContactList: View {
     
     @State private var contacts: [Contact] = [
-        Contact(name: "John Pork", lastMsg: "I'm still typing lmao", sent: true, seen: false, unread: true)
+        Contact(name: "John Pork", lastMsg: "I'm still typing lmao", sent: true, seen: false, unread: true, time: Date.now),
+        Contact(name: "Jane Doe", lastMsg: "See you tomorrow at the cafe!", sent: true, seen: true, unread: false, time: Date.now),
+        Contact(name: "Alex Smith", lastMsg: "Can you send me the file?", sent: false, seen: false, unread: false, time: Date.now)
     ]
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach($contacts) { $contact in
-                    HStack {
-                        Circle()
-                            .frame(maxWidth: 15, maxHeight: 15)
-                            .foregroundColor(.blue)
-                            .opacity(contact.unread ? 1 : 0)
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                        
-                        VStack {
-                            Text(contact.name)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Text(contact.lastMsg)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+        GeometryReader { geometry in
+            let screenWidth = geometry.size.width
+            let screenHeight = geometry.size.height
+            let isLandscape = screenWidth > screenHeight
+            
+            let referenceWidth = isLandscape ? screenHeight : screenWidth
+            
+            let nameFontSize = max(14, referenceWidth * 0.043)
+            let msgFontSize = max(12, referenceWidth * 0.038)
+            let avatarSize = referenceWidth * 0.12
+            let dotSize = referenceWidth * 0.03
+            let spacingSize = referenceWidth * 0.03
+            
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach($contacts) { $contact in
+                        VStack(spacing: 0) {
+                            HStack(spacing: spacingSize) {
+                                
+                                // 1. Unread status indicator
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: dotSize, height: dotSize)
+                                    .opacity(contact.unread ? 1 : 0)
+                                
+                                // 2. Profile Avatar
+                                Image(systemName: "person.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: avatarSize, height: avatarSize)
+                                    .foregroundColor(.gray)
+                                
+                                // 3. Central labels stack
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(contact.name)
+                                        .font(.system(size: nameFontSize, weight: .bold))
+                                        .lineLimit(1)
+                                    
+                                    Text(contact.lastMsg)
+                                        .font(.system(size: msgFontSize, weight: .regular))
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(1)
+                                }
+                                
+                                Spacer()
+                                
+                                // 4. Sent and Seen markers
+                                HStack(spacing: referenceWidth * 0.02) {
+                                    Circle()
+                                        .fill(contact.sent ? Color.blue : Color.gray.opacity(0.4))
+                                        .frame(width: dotSize, height: dotSize)
+                                    
+                                    Circle()
+                                        .fill(contact.seen ? Color.blue : Color.gray.opacity(0.4))
+                                        .frame(width: dotSize, height: dotSize)
+                                }
+                            }
+                            .padding(.vertical, referenceWidth * 0.03) // Row height expands gracefully
+                            
+                            Divider()
+                                .background(Color.gray.opacity(0.3))
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Circle()
-                            .frame(maxWidth: 15, maxHeight: 15)
-                            .foregroundColor(contact.sent ? .blue : .gray)
-                        
-                        Circle()
-                            .frame(maxWidth: 15, maxHeight: 15)
-                            .foregroundColor(contact.seen ? .blue : .gray)
-                        
                     }
-                    .frame(maxWidth: .infinity, maxHeight: 50, alignment: .leading)
                 }
+                .padding(.horizontal)
             }
         }
-        .padding()
     }
 }
 
