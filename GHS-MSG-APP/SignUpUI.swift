@@ -76,14 +76,14 @@ struct SignUpUI: View {
     private var header: some View {
         VStack(spacing: 10) {
             Text("Ram Chat")
-                .font(.system(size: 58, weight: .bold, design: .rounded))
+                .font(.system(size: 69, weight: .bold))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .minimumScaleFactor(0.72)
 
             Text("Sign in with your school email to stay connected.")
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.84))
+                .foregroundStyle(.white.opacity(0.90))
                 .multilineTextAlignment(.center)
         }
     }
