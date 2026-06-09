@@ -65,8 +65,8 @@ struct SignUpUI: View {
         LinearGradient(
             colors: [
                 Color(red: 0.27, green: 0.02, blue: 0.08),
-                Color(red: 0.48, green: 0.05, blue: 0.14),
-                Color(red: 0.70, green: 0.12, blue: 0.22)
+                Color(red: 0.48, green: 0.10, blue: 0.14),
+                Color(red: 0.65, green: 0.13, blue: 0.20)
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -83,7 +83,7 @@ struct SignUpUI: View {
 
             Text("Sign in with your school email to stay connected.")
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.90))
+                .foregroundStyle(.white.opacity(0.93))
                 .multilineTextAlignment(.center)
         }
     }
