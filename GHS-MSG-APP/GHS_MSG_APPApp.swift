@@ -25,7 +25,7 @@ struct GHS_MSG_APPApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ChatUI(name: "John Pork")
         }
         .modelContainer(sharedModelContainer)
     }
