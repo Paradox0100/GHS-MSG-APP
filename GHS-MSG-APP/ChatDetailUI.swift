@@ -43,11 +43,18 @@ struct ChatDetailUI: View {
                 VStack(spacing: 0) {
                     VStack {
                         HStack {
-                                    
-                                    VStack {
-                                        Image(systemName: "person.circle.fill").resizable().scaledToFit()
-                                        Text(name)
-                                    }
+                            VStack {
+                                let nameInitial = name[name.startIndex]
+                                Text(String(nameInitial))
+                                    .font(.largeTitle)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .clipShape(Circle())
+                                //Image(systemName: "person.circle.fill").resizable().scaledToFit()
+                                Text(name)
+                            }
                         }.frame(maxHeight: .infinity)
                     }
                     .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.1)
@@ -84,7 +91,6 @@ struct ChatDetailUI: View {
                     // Input Area: Fixed at bottom
                     
                     VStack {
-                        //Dittos()  BROKEN
                         HStack {
                             TextField("Message", text: $msg)
                                 .font(.body)
@@ -94,7 +100,6 @@ struct ChatDetailUI: View {
                                 .onSubmit {
                                     guard !msg.isEmpty else { return }
                                     content.append(ChatMessage(
-                                        time: Date(),
                                         msg: msg,
                                         me: true
                                     ))
@@ -105,7 +110,6 @@ struct ChatDetailUI: View {
                             Button(action: {
                                 guard !msg.isEmpty else { return }
                                 content.append(ChatMessage(
-                                    time: Date(),
                                     msg: msg,
                                     me: true
                                 ))

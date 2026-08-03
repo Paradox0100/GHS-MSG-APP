@@ -57,12 +57,22 @@ struct ContactList: View {
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(contact.unread ? 1 : 0)
                             
-                            // 2. Profile Avatar
+                            // 2. Profile Avatar - takes first initial
+                            let contactInitial = contact.name[contact.name.startIndex]
+                            Text(String(contactInitial))
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .frame(width: avatarSize, height: avatarSize)
+                                .background(Color.blue)
+                                .clipShape(Circle())
+                            /* OLD default profile picture
                             Image(systemName: "person.circle.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: avatarSize, height: avatarSize)
                                 .foregroundColor(.gray)
+                             */
                             
                             // 3. Central labels stack
                             VStack(alignment: .leading, spacing: 4) {
